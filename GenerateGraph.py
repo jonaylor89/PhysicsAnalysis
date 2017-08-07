@@ -55,7 +55,7 @@ class Window(QtWidgets.QMainWindow):
             generate_graph(df)
 
         else:
-            self.label.setText("File must be in the PhysicsAnalysis directory")
+            self.label.setText("File must be a csv file in the PhysicsAnalysis directory")
             self.label.adjustSize()
 
 

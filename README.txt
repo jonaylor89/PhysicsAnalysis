@@ -9,7 +9,7 @@
 
 5.) Download the CSV file from your email onto your laptop
 6.) Move the file to the PhysicsAnalysis directory
-7.) Open command prompt and change into the PhysicsAnalysis directory
+7.) Open a command prompt and change into the PhysicsAnalysis directory
 8.) Run the command ~\PhysicsAnalysis>python GenerateGraph.py  
 9.) Into the text box, type the filename of your CSV file and press 'Generate Graph'
 
