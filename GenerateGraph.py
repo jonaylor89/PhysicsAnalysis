@@ -61,18 +61,35 @@ class Window(QtWidgets.QMainWindow):
             self.label.adjustSize()
 
 
-def generate_graph_3D(data):
-    """ Plots x, y, z in 3D"""
+def generate_graph(data):
+    """ Plots trajectory of roller coaster"""
 
     mpl.rcParams['legend.fontsize'] = 10
 
-    fig = plt.figure()
-    ax = fig.gca(projection='3d')
+    fig1 = plt.figure(1)
+    ax = fig1.gca(projection='3d')
 
     ax.plot(data['ax'], data['ay'], data['az'],
         label='Roller Coaster Curve')
 
     ax.legend()
+
+""" Plots x, y, z, and total acceleration versus time and shows graph """
+    plt.figure(2)
+    plt.plot(data['time'], data['ax'], 'r-',
+             label="'x' Acceleration", alpha=0.7)
+    plt.plot(data['time'], data['ay'], 'b-',
+             label="'y' Acceleration", alpha=0.7)
+    plt.plot(data['time'], data['az'], 'g-',
+             label="'z' Acceleration", alpha=0.7)
+    plt.plot(data['time'], data['aT'], 'k-',
+             label="Total Acceleration", alpha=0.7)
+
+    plt.title("Acceleration vs Time")
+    plt.ylabel('Acceleration (m/s^2)')
+    plt.xlabel('Time (s)')
+
+    plt.legend(loc='upper left')
 
     plt.show()
 
