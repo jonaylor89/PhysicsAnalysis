@@ -15,6 +15,8 @@ import sys
 import os
 
 import pandas as pd
+import matplotlib as mpl
+from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 
 from PyQt5 import QtWidgets, QtGui
@@ -60,8 +62,20 @@ class Window(QtWidgets.QMainWindow):
 
 
 def generate_graph(data):
-    """ Plots x, y, z, and total acceleration versus time and shows graph """
+    """ Plots trajectory of roller coaster"""
 
+    mpl.rcParams['legend.fontsize'] = 10
+
+    fig1 = plt.figure(1)
+    ax = fig1.gca(projection='3d')
+
+    ax.plot(data['ax'], data['ay'], data['az'],
+        label='Roller Coaster Curve')
+
+    ax.legend()
+
+""" Plots x, y, z, and total acceleration versus time and shows graph """
+    plt.figure(2)
     plt.plot(data['time'], data['ax'], 'r-',
              label="'x' Acceleration", alpha=0.7)
     plt.plot(data['time'], data['ay'], 'b-',
