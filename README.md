@@ -1,6 +1,6 @@
 
--------------------------------
-# Android
+------------------------------
+### Android
 1. Change setting in the app to Linear Acceleration
 2. To begin collecting data, press the large red button
 3. To stop the collection, press the large red button again
