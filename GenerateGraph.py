@@ -74,8 +74,10 @@ def generate_graph(data):
 
     ax.legend()
 
-""" Plots x, y, z, and total acceleration versus time and shows graph """
+    """ Plots x, y, z, and total acceleration versus time and shows graph """
+
     plt.figure(2)
+
     plt.plot(data['time'], data['ax'], 'r-',
              label="'x' Acceleration", alpha=0.7)
     plt.plot(data['time'], data['ay'], 'b-',
