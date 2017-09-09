@@ -54,7 +54,7 @@ class Window(QtWidgets.QMainWindow):
         if os.path.isfile('%s.csv' % textboxValue):
             self.label.setText("")
             df = pd.read_csv(textboxValue + ".csv")
-            generate_graph_3D(df)
+            generate_graph(df)
 
         else:
             self.label.setText("File must be a csv file in the PhysicsAnalysis directory")
