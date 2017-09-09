@@ -15,6 +15,8 @@ import sys
 import os
 
 import pandas as pd
+import matplotlib as mpl
+from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 
 from PyQt5 import QtWidgets, QtGui
@@ -59,23 +61,18 @@ class Window(QtWidgets.QMainWindow):
             self.label.adjustSize()
 
 
-def generate_graph(data):
-    """ Plots x, y, z, and total acceleration versus time and shows graph """
+def generate_graph_3D(data):
+    """ Plots x, y, z in 3D"""
 
-    plt.plot(data['time'], data['ax'], 'r-',
-             label="'x' Acceleration", alpha=0.7)
-    plt.plot(data['time'], data['ay'], 'b-',
-             label="'y' Acceleration", alpha=0.7)
-    plt.plot(data['time'], data['az'], 'g-',
-             label="'z' Acceleration", alpha=0.7)
-    plt.plot(data['time'], data['aT'], 'k-',
-             label="Total Acceleration", alpha=0.7)
+    mpl.rcParams['legend.fontsize'] = 10
 
-    plt.title("Acceleration vs Time")
-    plt.ylabel('Acceleration (m/s^2)')
-    plt.xlabel('Time (s)')
+    fig = plt.figure()
+    ax = fig.gca(projection='3d')
 
-    plt.legend(loc='upper left')
+    ax.plot(data['ax'], data['ay'], data['az'],
+        label='Roller Coaster Curve')
+
+    ax.legend()
 
     plt.show()
 
