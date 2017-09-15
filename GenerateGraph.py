@@ -30,7 +30,7 @@ class Window(QtWidgets.QMainWindow):
 
         self.setGeometry(50, 50, 500, 300)
         self.setWindowTitle('Data Analysis')
-        self.setWindowIcon(QtGui.QIcon('WindowIcon.png'))
+        self.setWindowIcon(QtGui.QIcon('Images\WindowIcon.png'))
 
         self.btn = QtWidgets.QPushButton("Generate Graph", self)
         self.btn.clicked.connect(self.button_handler)
