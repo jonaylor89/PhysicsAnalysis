@@ -15,7 +15,7 @@
 4. Run the command
 
 ```
-\PhysicsAnalysis>*python GenerateGraph.py*  
+C:\PhysicsAnalysis>python GenerateGraph.py
 ```
 
 5. Into the text box, type the filename of your CSV file and press *Generate Graph*
