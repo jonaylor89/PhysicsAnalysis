@@ -1,4 +1,11 @@
 
+![Textbox](https://github.com/jonaylor89/PhysicsAnalysis/blob/master/Images/Textbox.png)
+-----------------------------------
+![2D line graph](https://github.com/jonaylor89/PhysicsAnalysis/blob/master/Images/2Dgraph.png)
+-------------------------------------
+![2D line graph](https://github.com/jonaylor89/PhysicsAnalysis/blob/master/Images/3Dgraph.png)
+
+# Setup
 ------------------------------
 ### Android
 1. Change setting in the app to Linear Acceleration
