@@ -1,10 +1,4 @@
 
-![Textbox](https://github.com/jonaylor89/PhysicsAnalysis/blob/master/Images/Textbox.png)
------------------------------------
-![2D line graph](https://github.com/jonaylor89/PhysicsAnalysis/blob/master/Images/2Dgraph.png)
--------------------------------------
-![2D line graph](https://github.com/jonaylor89/PhysicsAnalysis/blob/master/Images/3Dgraph.png)
-
 # Setup
 ------------------------------
 ### Android
@@ -26,3 +20,10 @@ C:\PhysicsAnalysis>python GenerateGraph.py
 ```
 
 5. Into the text box, type the filename of your CSV file and press *Generate Graph*
+
+
+![Textbox](https://github.com/jonaylor89/PhysicsAnalysis/blob/master/Images/Textbox.png)
+-----------------------------------
+![2D line graph](https://github.com/jonaylor89/PhysicsAnalysis/blob/master/Images/2Dgraph.png)
+-------------------------------------
+![2D line graph](https://github.com/jonaylor89/PhysicsAnalysis/blob/master/Images/3Dgraph.png)
