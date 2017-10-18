@@ -14,6 +14,7 @@ Description:
 import sys
 import os
 
+from scipy.integrate import cumtrapz
 import pandas as pd
 import matplotlib as mpl
 from mpl_toolkits.mplot3d import Axes3D
@@ -69,7 +70,19 @@ def generate_graph(data):
     fig1 = plt.figure(1)
     ax = fig1.gca(projection='3d')
 
-    ax.plot(data['ax'], data['ay'], data['az'],
+    vx = cumtrapz(data['ax'].as_matrix(), data['time'].as_matrix(), initial=0)
+    vy = cumtrapz(data['ay'].as_matrix(), data['time'].as_matrix(), initial=0)
+    vz = cumtrapz(data['az'].as_matrix(), data['time'].as_matrix(), initial=0)
+    vT = cumtrapz(data['aT'].as_matrix(), data['time'].as_matrix(), initial=0)
+
+    px = cumtrapz(vx, data['time'].as_matrix(), initial=0)
+    py = cumtrapz(vy, data['time'].as_matrix(), initial=0)
+    pz = cumtrapz(vz, data['time'].as_matrix(), initial=0)
+    pT = cumtrapz(vT, data['time'].as_matrix(), initial=0)
+
+    # ax.plot(data['ax'], data['ay'], data['az'],
+    #     label='Roller Coaster Curve')
+    ax.plot(px, py, pz,
         label='Roller Coaster Curve')
 
     ax.legend()
@@ -90,7 +103,38 @@ def generate_graph(data):
     plt.title("Acceleration vs Time")
     plt.ylabel('Acceleration (m/s^2)')
     plt.xlabel('Time (s)')
+    plt.legend(loc='upper left')
 
+    plt.figure(3)
+    plt.clf()
+    plt.plot(data['time'], vx, 'r-',
+          label="'x' Velocity", alpha=0.7)
+    plt.plot(data['time'], vy, 'b-',
+          label="'y' Velocity", alpha=0.7)
+    plt.plot(data['time'], vz, 'g-',
+          label="'z' Velocity", alpha=0.7)
+    plt.plot(data['time'], data['aT'], 'k-',
+          label="Total Velocity", alpha=0.7)
+
+    plt.title("Velocity vs Time")
+    plt.ylabel('Velocity (m/s)')
+    plt.xlabel('Time (s)')
+    plt.legend(loc='upper left')
+
+    plt.figure(4)
+    plt.clf()
+    plt.plot(data['time'], px, 'r-',
+        label="'x' Position", alpha=0.7)
+    plt.plot(data['time'], py, 'b-',
+        label="'y' Position", alpha=0.7)
+    plt.plot(data['time'], pz, 'g-',
+        label="'z' Position", alpha=0.7)
+    plt.plot(data['time'], pT, 'k-',
+        label="Total Position", alpha=0.7)
+
+    plt.title("Position vs Time")
+    plt.ylabel('Position (m)')
+    plt.xlabel('Time (s)')
     plt.legend(loc='upper left')
 
     plt.show()
