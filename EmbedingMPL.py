@@ -62,7 +62,6 @@ class ThreeCanvas(MyMplCanvas):
         vy = cumtrapz(data['ay'].as_matrix(), data['time'].as_matrix(), initial=0)
         vz = cumtrapz(data['az'].as_matrix(), data['time'].as_matrix(), initial=0)
 
-        self.axes.clf()
         self.axes.plot(data['time'], vx, 'r-',
                  label="'x' Velocity", alpha=0.7)
         self.axes.plot(data['time'], vy, 'b-',
@@ -78,6 +77,36 @@ class ThreeCanvas(MyMplCanvas):
         # self.axes.legend(loc='upper left')
 
         self.draw()
+
+
+class FourCanvas(MyMplCanvas):
+    def update_graph(self, data):
+        vx = cumtrapz(data['ax'].as_matrix(), data['time'].as_matrix(), initial=0)
+        vy = cumtrapz(data['ay'].as_matrix(), data['time'].as_matrix(), initial=0)
+        vz = cumtrapz(data['az'].as_matrix(), data['time'].as_matrix(), initial=0)
+        vT = cumtrapz(data['aT'].as_matrix(), data['time'].as_matrix(), initial=0)
+
+        px = cumtrapz(vx, data['time'].as_matrix(), initial=0)
+        py = cumtrapz(vy, data['time'].as_matrix(), initial=0)
+        pz = cumtrapz(vz, data['time'].as_matrix(), initial=0)
+        pT = cumtrapz(vT, data['time'].as_matrix(), initial=0)
+
+        self.axes.plot(data['time'], px, 'r-',
+                 label="'x' Position", alpha=0.7)
+        self.axes.plot(data['time'], py, 'b-',
+                 label="'y' Position", alpha=0.7)
+        self.axes.plot(data['time'], pz, 'g-',
+                 label="'z' Position", alpha=0.7)
+        self.axes.plot(data['time'], pT, 'k-',
+                 label="Total Position", alpha=0.7)
+
+        # self.axes.title("Acceleration vs Time")
+        # self.axes.ylabel('Acceleration (m/s^2)')
+        # self.axes.xlabel('Time (s)')
+        # self.axes.legend(loc='upper left')
+
+        self.draw()
+
 
 class ApplicationWindow(QMainWindow):
     def __init__(self):
@@ -110,8 +139,8 @@ class ApplicationWindow(QMainWindow):
         l = QGridLayout(self.main_widget)
         self.one = MyMplCanvas(self.main_widget, width=4, height=4, dpi=100)
         self.two = TwoCanvas(self.main_widget, width=4, height=4, dpi=100)
-        self.three = ThreeCanvas(self.main_widget, width=5, height=4, dpi=100)
-        self.four = MyMplCanvas(self.main_widget, width=5, height=4, dpi=100)
+        self.three = ThreeCanvas(self.main_widget, width=4, height=4, dpi=100)
+        self.four = FourCanvas(self.main_widget, width=4, height=4, dpi=100)
         l.addWidget(self.one, 0, 0)
         l.addWidget(self.two, 0, 1)
         l.addWidget(self.three, 1, 0)
@@ -135,6 +164,8 @@ class ApplicationWindow(QMainWindow):
         if fileName.endswith(".csv"):
             self.dataframe = pd.read_csv(fileName)
             self.two.update_graph(self.dataframe)
+            self.three.update_graph(self.dataframe)
+            self.four.update_graph(self.dataframe)
 
     def fileQuit(self):
         self.close()
