@@ -1,12 +1,17 @@
 import sys
 import random
+from scipy.integrate import cumtrapz
+import pandas as pd
 import matplotlib
+import os
 matplotlib.use("Qt5Agg")
-from PyQt5 import QtCore
-from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QFileDialog, QGridLayout, QSizePolicy, QMessageBox, QWidget
 from numpy import arange, sin, pi
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
+
+LOCAL_PATH = os.path.dirname(os.path.abspath(__file__))
 
 
 class MyMplCanvas(FigureCanvas):
@@ -32,42 +37,66 @@ class MyMplCanvas(FigureCanvas):
         pass
 
 
-class MyStaticMplCanvas(MyMplCanvas):
-    """Simple canvas with a sine plot."""
-    def compute_initial_figure(self):
-        t = arange(0.0, 3.0, 0.01)
-        s = sin(2*pi*t)
-        self.axes.plot(t, s)
+class TwoCanvas(MyMplCanvas):
+    def update_graph(self, data):
+        self.axes.plot(data['time'], data['ax'], 'r-',
+                 label="'x' Acceleration", alpha=0.7)
+        self.axes.plot(data['time'], data['ay'], 'b-',
+                 label="'y' Acceleration", alpha=0.7)
+        self.axes.plot(data['time'], data['az'], 'g-',
+                 label="'z' Acceleration", alpha=0.7)
+        self.axes.plot(data['time'], data['aT'], 'k-',
+                 label="Total Acceleration", alpha=0.7)
 
+        # self.axes.title("Acceleration vs Time")
+        # self.axes.ylabel('Acceleration (m/s^2)')
+        # self.axes.xlabel('Time (s)')
+        # self.axes.legend(loc='upper left')
 
-class MyDynamicMplCanvas(MyMplCanvas):
-    """A canvas that updates itself every second with a new plot."""
-    def __init__(self, *args, **kwargs):
-        MyMplCanvas.__init__(self, *args, **kwargs)
-        timer = QtCore.QTimer(self)
-        timer.timeout.connect(self.update_figure)
-        timer.start(1000)
-
-    def compute_initial_figure(self):
-        self.axes.plot([0, 1, 2, 3], [1, 2, 0, 4], 'r')
-
-    def update_figure(self):
-        # Build a list of 4 random integers between 0 and 10 (both inclusive)
-        l = [random.randint(0, 10) for i in range(4)]
-
-        self.axes.plot([0, 1, 2, 3], l, 'r')
         self.draw()
 
+
+class ThreeCanvas(MyMplCanvas):
+    def update_graph(self, data):
+        vx = cumtrapz(data['ax'].as_matrix(), data['time'].as_matrix(), initial=0)
+        vy = cumtrapz(data['ay'].as_matrix(), data['time'].as_matrix(), initial=0)
+        vz = cumtrapz(data['az'].as_matrix(), data['time'].as_matrix(), initial=0)
+
+        self.axes.clf()
+        self.axes.plot(data['time'], vx, 'r-',
+                 label="'x' Velocity", alpha=0.7)
+        self.axes.plot(data['time'], vy, 'b-',
+                 label="'y' Velocity", alpha=0.7)
+        self.axes.plot(data['time'], vz, 'g-',
+                 label="'z' Velocity", alpha=0.7)
+        self.axes.plot(data['time'], data['aT'], 'k-',
+                 label="Total Velocity", alpha=0.7)
+
+        # self.axes.title("Acceleration vs Time")
+        # self.axes.ylabel('Acceleration (m/s^2)')
+        # self.axes.xlabel('Time (s)')
+        # self.axes.legend(loc='upper left')
+
+        self.draw()
 
 class ApplicationWindow(QMainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
-        self.setWindowTitle("application main window")
+        self.setGeometry(50, 50, 1200, 600)
+        self.setWindowTitle('Data Analysis')
+        self.setWindowIcon(
+            QtGui.QIcon(
+                os.path.join(LOCAL_PATH, 'Images/WindowIcon.png')
+            )
+        )
 
         self.file_menu = QMenu('&File', self)
+        self.file_menu.addAction('&Open', self.open_file_name_dialog,
+                                 QtCore.Qt.CTRL + QtCore.Qt.Key_O)
         self.file_menu.addAction('&Quit', self.fileQuit,
                 QtCore.Qt.CTRL + QtCore.Qt.Key_Q)
+
         self.menuBar().addMenu(self.file_menu)
 
         self.help_menu = QMenu('&Help', self)
@@ -78,16 +107,34 @@ class ApplicationWindow(QMainWindow):
 
         self.main_widget = QWidget(self)
 
-        l = QVBoxLayout(self.main_widget)
-        sc = MyStaticMplCanvas(self.main_widget, width=5, height=4, dpi=100)
-        dc = MyDynamicMplCanvas(self.main_widget, width=5, height=4, dpi=100)
-        l.addWidget(sc)
-        l.addWidget(dc)
+        l = QGridLayout(self.main_widget)
+        self.one = MyMplCanvas(self.main_widget, width=4, height=4, dpi=100)
+        self.two = TwoCanvas(self.main_widget, width=4, height=4, dpi=100)
+        self.three = ThreeCanvas(self.main_widget, width=5, height=4, dpi=100)
+        self.four = MyMplCanvas(self.main_widget, width=5, height=4, dpi=100)
+        l.addWidget(self.one, 0, 0)
+        l.addWidget(self.two, 0, 1)
+        l.addWidget(self.three, 1, 0)
+        l.addWidget(self.four, 1, 1)
 
         self.main_widget.setFocus()
         self.setCentralWidget(self.main_widget)
 
-        self.statusBar().showMessage("All hail matplotlib!", 2000)
+        self.show()
+
+        # self.statusBar().showMessage("All hail matplotlib!", 2000)
+
+    def open_file_name_dialog(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        fileName, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", "",
+                                                  "All Files (*);;Python Files (*.py)", options=options)
+        if fileName:
+            print(fileName)
+
+        if fileName.endswith(".csv"):
+            self.dataframe = pd.read_csv(fileName)
+            self.two.update_graph(self.dataframe)
 
     def fileQuit(self):
         self.close()
@@ -118,5 +165,4 @@ if __name__ == '__main__':
     aw = ApplicationWindow()
     aw.setWindowTitle("PyQt5 Matplot Example")
     aw.show()
-    #sys.exit(qApp.exec_())
     app.exec_()
