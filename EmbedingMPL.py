@@ -24,12 +24,13 @@ class MyMplCanvas(FigureCanvas):
         self.setParent(parent)
 
         FigureCanvas.setSizePolicy(self,
-                QSizePolicy.Expanding,
-                QSizePolicy.Expanding)
+                                   QSizePolicy.Expanding,
+                                   QSizePolicy.Expanding)
         FigureCanvas.updateGeometry(self)
 
     def compute_initial_figure(self):
         pass
+
 
 class MyStaticMplCanvas(MyMplCanvas):
     """Simple canvas with a sine plot."""
@@ -56,6 +57,7 @@ class MyDynamicMplCanvas(MyMplCanvas):
 
         self.axes.plot([0, 1, 2, 3], l, 'r')
         self.draw()
+
 
 class ApplicationWindow(QMainWindow):
     def __init__(self):
@@ -95,18 +97,20 @@ class ApplicationWindow(QMainWindow):
 
     def about(self):
         QMessageBox.about(self, "About",
-  """EmbedingMPL.py example
-  Copyright 2015 BoxControL
+"""
+EmbedingMPL.py example
+Copyright 2015 BoxControL
 
-  This program is a simple example of a Qt5 application embedding matplotlib
-  canvases. It is base on example from matplolib documentation, and initially was
-  developed from Florent Rougon and Darren Dale.
+This program is a simple example of a Qt5 application embedding matplotlib
+canvases. It is base on example from matplolib documentation, and initially was
+developed from Florent Rougon and Darren Dale.
 
-  http://matplotlib.org/examples/user_interfaces/embedding_in_qt4.html
+http://matplotlib.org/examples/user_interfaces/embedding_in_qt4.html
 
-  It may be used and modified with no restriction; raw copies as well as
-  modified versions may be distributed without limitation."""
-  )
+It may be used and modified with no restriction; raw copies as well as
+modified versions may be distributed without limitation.
+"""
+                          )
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
