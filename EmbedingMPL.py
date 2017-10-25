@@ -20,7 +20,7 @@ class MyMplCanvas(FigureCanvas):
         fig = Figure(figsize=(width, height), dpi=dpi)
         self.axes = fig.add_subplot(111)
         # We want the axes cleared every time plot() is called
-        self.axes.hold(False)
+        self.axes.hold(True)
 
         self.compute_initial_figure()
 
@@ -61,6 +61,7 @@ class ThreeCanvas(MyMplCanvas):
         vx = cumtrapz(data['ax'].as_matrix(), data['time'].as_matrix(), initial=0)
         vy = cumtrapz(data['ay'].as_matrix(), data['time'].as_matrix(), initial=0)
         vz = cumtrapz(data['az'].as_matrix(), data['time'].as_matrix(), initial=0)
+
 
         self.axes.plot(data['time'], vx, 'r-',
                  label="'x' Velocity", alpha=0.7)
