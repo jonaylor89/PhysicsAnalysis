@@ -18,7 +18,7 @@
 C:\PhysicsAnalysis>python EmbedingMPL.py
 ```
 
-5. Click *open* in the top left corner and open your csv file 
+5. Click *file* in the top left corner and open your csv file 
 
 
 ![Window](https://github.com/jonaylor89/PhysicsAnalysis/blob/master/Images/GridLayout.png)
