@@ -7,7 +7,6 @@ import os
 matplotlib.use("Qt5Agg")
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QFileDialog, QGridLayout, QSizePolicy, QMessageBox, QWidget
-from numpy import arange, sin, pi
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 
@@ -177,17 +176,8 @@ class ApplicationWindow(QMainWindow):
     def about(self):
         QMessageBox.about(self, "About",
 """
-EmbedingMPL.py example
-Copyright 2015 BoxControL
-
-This program is a simple example of a Qt5 application embedding matplotlib
-canvases. It is base on example from matplolib documentation, and initially was
-developed from Florent Rougon and Darren Dale.
-
-http://matplotlib.org/examples/user_interfaces/embedding_in_qt4.html
-
-It may be used and modified with no restriction; raw copies as well as
-modified versions may be distributed without limitation.
+This project was made to generate graphs from csv files containing linear acceleration data.
+To open the desired csv file click the `file` icon and open your csv file.
 """
                           )
 
@@ -195,6 +185,6 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
 
     aw = ApplicationWindow()
-    aw.setWindowTitle("PyQt5 Matplot Example")
+    aw.setWindowTitle("Physics Analysis")
     aw.show()
     app.exec_()
