@@ -3,6 +3,7 @@ import random
 from scipy.integrate import cumtrapz
 import pandas as pd
 import matplotlib
+from mpl_toolkits.mplot3d import Axes3D
 import os
 matplotlib.use("Qt5Agg")
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -17,6 +18,7 @@ class MyMplCanvas(FigureCanvas):
     """Ultimately, this is a QWidget (as well as a FigureCanvasAgg, etc.)."""
     def __init__(self, parent=None, width=5, height=4, dpi=100):
         fig = Figure(figsize=(width, height), dpi=dpi)
+        self.fig = fig
         self.axes = fig.add_subplot(111)
         # We want the axes cleared every time plot() is called
         self.axes.hold(True)
@@ -35,6 +37,32 @@ class MyMplCanvas(FigureCanvas):
     def compute_initial_figure(self):
         pass
 
+
+class OneCanvas(MyMplCanvas):
+    def update_graph(self, data):
+        vx = cumtrapz(data['ax'].as_matrix(), data['time'].as_matrix(), initial=0)
+        vy = cumtrapz(data['ay'].as_matrix(), data['time'].as_matrix(), initial=0)
+        vz = cumtrapz(data['az'].as_matrix(), data['time'].as_matrix(), initial=0)
+        vT = cumtrapz(data['aT'].as_matrix(), data['time'].as_matrix(), initial=0)
+
+        px = cumtrapz(vx, data['time'].as_matrix(), initial=0)
+        py = cumtrapz(vy, data['time'].as_matrix(), initial=0)
+        pz = cumtrapz(vz, data['time'].as_matrix(), initial=0)
+        pT = cumtrapz(vT, data['time'].as_matrix(), initial=0)
+
+        # ax.plot(data['ax'], data['ay'], data['az'],
+        #     label='Roller Coaster Curve')
+
+        self.axes = self.fig.gca(projection='3d')
+        self.axes.plot(px, py, pz,
+                label='Roller Coaster Curve')
+
+        # self.axes.title("Acceleration vs Time")
+        # self.axes.ylabel('Acceleration (m/s^2)')
+        # self.axes.xlabel('Time (s)')
+        # self.axes.legend(loc='upper left')
+
+        self.draw()
 
 class TwoCanvas(MyMplCanvas):
     def update_graph(self, data):
@@ -137,7 +165,7 @@ class ApplicationWindow(QMainWindow):
         self.main_widget = QWidget(self)
 
         l = QGridLayout(self.main_widget)
-        self.one = MyMplCanvas(self.main_widget, width=4, height=4, dpi=100)
+        self.one = OneCanvas(self.main_widget, width=4, height=4, dpi=100)
         self.two = TwoCanvas(self.main_widget, width=4, height=4, dpi=100)
         self.three = ThreeCanvas(self.main_widget, width=4, height=4, dpi=100)
         self.four = FourCanvas(self.main_widget, width=4, height=4, dpi=100)
@@ -163,6 +191,7 @@ class ApplicationWindow(QMainWindow):
 
         if fileName.endswith(".csv"):
             self.dataframe = pd.read_csv(fileName)
+            self.one.update_graph(self.dataframe)
             self.two.update_graph(self.dataframe)
             self.three.update_graph(self.dataframe)
             self.four.update_graph(self.dataframe)
