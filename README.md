@@ -10,12 +10,16 @@
 
 **[!!!] Requires Python >3**
 
+### Install Python3 Dependencies
+
+`pip3 install -r requirements.txt`
+
 1. Download the CSV file from your email onto your laptop
 2. Open a command prompt and change into the PhysicsAnalysis directory
 3. Run the command
 
 ```
-C:\PhysicsAnalysis>python EmbedingMPL.py
+C:\PhysicsAnalysis>python EmbeddingMPL.py
 ```
 
 5. Click *file* in the top left corner and open your csv file 
