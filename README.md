@@ -15,7 +15,7 @@
 3. Run the command
 
 ```
-C:\PhysicsAnalysis>python EmbedingMPL.py
+C:\PhysicsAnalysis>python EmbeddingMPL.py
 ```
 
 5. Click *file* in the top left corner and open your csv file 
