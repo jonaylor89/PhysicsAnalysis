@@ -4,7 +4,7 @@ Author: John Naylor
 
 Description:
     A window is created allowing
-    the user to enter the filename
+   the user to enter the filename
     to a csv file containing physics
     linear acceleration data. With the
     data, a line graph is generated

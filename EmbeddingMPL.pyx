@@ -11,7 +11,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QFile
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 
-LOCAL_PATH = os.path.dirname(os.path.abspath(__file__))
+LOCAL_PATH = os.path.dirname(os.path.abspath("__file__"))
 
 
 class MyMplCanvas(FigureCanvas):
