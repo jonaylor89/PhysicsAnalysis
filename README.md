@@ -1,5 +1,6 @@
 
 # Windows Setup
+
 **The set up is almost exactly the same for macOS and linux**
 ------------------------------
 ### Getting CSV file from an android device (Physics Toolbox Suite app)
